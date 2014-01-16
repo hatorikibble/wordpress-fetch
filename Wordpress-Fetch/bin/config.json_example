@@ -1,0 +1,8 @@
+{"global":
+ {
+  "username":"scott",
+  "password":"hunter2",
+  "blog_url":"https://myblog.wordpress.com",
+  "max_posts":3
+ }
+}
