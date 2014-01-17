@@ -2,6 +2,10 @@ package Wordpress::Fetch;
 
 use strict;
 use warnings;
+use utf8;
+
+
+binmode( STDOUT, ":utf8" );
 
 =head1 NAME
 
@@ -15,6 +19,7 @@ Version 0.01
 
 our $VERSION = '0.01';
 
+use HTML::Restrict;
 use MooseX::App::Simple qw (Config);
 use Try::Tiny;
 use WordPress::XMLRPC;
@@ -56,8 +61,11 @@ q[number of posts the script should fetch ideally bigger than your post count, t
 );
 
 sub run {
-    my ($self) = @_;
+    my ($self)  = @_;
+    my $HR = HTML::Restrict->new();
     my $options = undef;
+    my $outfile = undef;
+    my $i       = 0;
 
     $self->{Wordpress} = WordPress::XMLRPC->new(
         {
@@ -86,7 +94,40 @@ sub run {
         $self->max_posts, scalar( @{$p_ref} ) );
 
     foreach my $post ( @{$p_ref} ) {
-        print $post->{title} . "\n";
+        print "Fetch Post $i: '$post->{title}'...";
+
+        if ( ( $self->textonly ) && ( $self->textonly == 1 ) ) {
+            print "stripping HTML...";
+            $post->{description} = $HR->process( $post->{description} );
+
+            # strip also wordpress codes
+            $post->{description} =~ s/\[.*?\]//g;
+
+            # pre process for wordle
+            $post->{description} =~ s/(\s)(to|and|the|of)(\s|\n|$)/$1$3/g;
+        }
+
+        if ( $post->{dateCreated} =~ /^(\d{4})/ ) {
+            print "saving to file...";
+
+            $outfile = $1 . "_blog_output.txt";
+            open( F, ">>", $outfile )
+              or die "Cannot open '$outfile':$!";
+            binmode( F, ":utf8" );
+            print F << "EOT";
+$post->{title} ($post->{dateCreated})
+
+$post->{description}
+
+$post->{link}
+---
+EOT
+            close(F)
+              or die "Cannot open '$outfile':$!";
+        }
+
+        print "\n";
+
     }
 
 }
