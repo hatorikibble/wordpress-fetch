@@ -18,6 +18,7 @@ WriteMakefile(
     BUILD_REQUIRES => {
         'Config::Any::JSON' => '0.24',
         'MooseX::App'       => '1.22',
+        'HTML::Restrict'    => '2.1.9',
         'Test::More'        => 0,
         'Try::Tiny'         => '0.18',
         'Wordpress::XMLRPC' => '1.23',
