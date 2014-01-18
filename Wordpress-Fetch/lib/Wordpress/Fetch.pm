@@ -9,11 +9,22 @@ binmode( STDOUT, ":utf8" );
 
 =head1 NAME
 
-Wordpress::Fetch - The great new Wordpress::FetchPosts!
+Wordpress::Fetch - fetch your Wordpress blog posts and save to a file
 
 =head1 VERSION
 
 Version 0.01
+
+=head1 DESCRIPTION
+
+this script connects via the XMLRPC API to your Wordpress blog, fetches your posts and
+saves them into the text file '<YEAR>_blog_output.txt'.
+
+If C<textonly> is set, then HTML tags and Wordpress codes are stripped.
+
+You can set the options via the command line or create a JSON config file and point
+the parameter C<--config> to it.
+(See C<config.json_example>)
 
 =cut
 
