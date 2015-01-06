@@ -16,12 +16,12 @@ WriteMakefile(
         'ExtUtils::MakeMaker' => 0,
     },
     BUILD_REQUIRES => {
-        'Config::Any::JSON' => '0.24',
+        'Config::Any::JSON' => '0',
         'MooseX::App'       => '1.22',
         'HTML::Restrict'    => '2.1.9',
         'Test::More'        => 0,
         'Try::Tiny'         => '0.18',
-        'Wordpress::XMLRPC' => '1.23',
+        'WordPress::XMLRPC' => '1.23',
     },
     PREREQ_PM => {
 
